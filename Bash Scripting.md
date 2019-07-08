@@ -155,10 +155,62 @@ echo $c # prints 20
 This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces the length of the variable (its number of characters). For example, if ```a='Hello World'```, then ```${#a}``` is 11. If ```b=4953```, then ```${#b}``` is 4.
 
 > ## *Knowledge Check*
+> ```./example_script 2 3```
 > ```bash
-> 
+> let "num_1 = $1 * $2"
+> echo $num_1
+> expr $1 \* $2
+> expr $1 * $2
+> num_2=$(( num_1 / $1 ))
+> echo $num_2
 > ```
-
+> 1. What will be the first line output by this script?
+> <!-- 6 -->
+>   - [ ] 2
+>   - [ ] 3
+>   - [ ] 6
+>   - [ ] Error
+> 0. What will be the second line output by this script?
+> <!-- 6 -->
+>   - [ ] 2
+>   - [ ] 3
+>   - [ ] 6
+>   - [ ] Error
+> 0. What will be the third line output by this script?
+> <!-- Error -->
+>   - [ ] 2
+>   - [ ] 3
+>   - [ ] 6
+>   - [ ] Error
+> 0. What will be the fourth line output by this script?
+> <!-- 2 -->
+>   - [ ] 2
+>   - [ ] 3
+>   - [ ] 6
+>   - [ ] Error
+>
+> <!-- ```bash
+> #!/bin/bash
+> # A script to output tomorrow's date
+> x=$( date +%d ) # x reads in as a string
+> # All of these fail to interpret x as an integer:
+> (( x += 1 ))
+> (( x ++ ))
+> x=$(( x + 1 ))
+> x=$(( $x + 1 ))
+> # expr works correctly to interpret x as an integer:
+> x=$( expr $x + 1 )
+> echo "$x $( date +%b\ %Y )" # prints tomorrow's date
+> # pads the number with a leading zero for 2-digit width e.g. "09 July 2019":
+> printf "%02d $( date +%b\ %Y )\n" $x
+> printf "%02d $( date +%b\ %Y )\n" $( expr $( date +%d ) + 1 ) # one-liner solution
+> ``` -->
+> ```bash
+> #!/bin/bash
+> expr $RANDOM % 100
+> ```
+> 5. What will this script output?
+> <!-- A random number between 0 and 100 -->
 
 ### Comparisons and Operators
 Bash makes the Boolean comparison OR using double pipes '||' and AND using double ampersands '&&'.
@@ -166,37 +218,85 @@ Bash makes the Boolean comparison OR using double pipes '||' and AND using doubl
 The following conditionals can be used in bash. Note the different usage depending on whether you're comparing numbers or comparing strings.
 
 | Description      | Numeric Comparison | String Comparison |
-| ---------------- | ------------------ | ----------------- |
+| ---------------- |:------------------:|:-----------------:|
 | less than        | -lt                | <                 |
 | greater than     | -gt                | >                 |
-| equal            | -eq                | =                 |
+| equal            | -eq                | = or ==           |
 | not equal        | -ne                | !=                |
 | less or equal    | -le                | N/A               |
 | greater or equal | -ge                | N/A               |
 
-### If Statements
-Square brackets are a reference to the command ```test```. That command evaluates whatever is in the square brackets and exits with a status. A status of 0 means it exited with success; a status of 1 means it exited with failure. In other words, 0 -> True and 1 -> False.
-
-<!-- If statements can be used to [[ evaluate ]] or test (( arithmetic )) -->
+Square brackets are a reference to the command ```test```. That command evaluates whatever is in the square brackets and exits with a status. A status of 0 means it exited with success; a status of 1 means it exited with failure. In other words:  
+*0 -> True*  
+*1 -> False*
 
 **Example:**
 ```bash
 #!/bin/bash
-# There are two ways to write an if statement:
+string_a="UNIX"
+string_b="GNU"
+echo "Are the strings $string_a and $string_b equal?"
+[ $string_a = $string_b ]
+echo $? # Recall from above, this is the exit status of the most recently run process
+```
+**Output:**
+```console
+Are the strings UNIX and GNU equal?
+1
+```
+**Example:**
+```bash
+#!/bin/bash
+num_a=100
+num_b=100
+echo "Is $num_a equal to $num_b?"
+[ $num_a -eq $num_b ]
+echo $?
+```
+**Output:**
+```console
+Is 100 equal to 100?
+0
+```
 
+In addition to the comparators for numbers and strings shown above, you can use these operators for more advanced functionality:
+
+|  Description                                     | Operator            |
+| ------------------------------------------------ | ------------------- |
+| length of string is greater than zero (not null) | -n \<string\>       |
+| length of string is zero (empty)                 | -z \<string\>       |
+| file exists                                      | -e, -a \<file\>     |
+| file is regular i.e. not a directory or device   | -f \<file\>         |
+| file size is greater than zero (not empty)       | -s \<file\>         |
+| file is a pipe                                   | -p \<file\>         |
+| file is a symbolic link                          | -h, -L \<file\>     |
+| file is a block device                           | -b \<file\>         |
+| file is a character device                       | -c \<file\>         |
+| file is associated with a terminal device        | -t \<file\>         |
+| check if stdin in a given shell is a terminal    | -t 0                |
+| check if stdout in a given shell is a terminal   | -t 1                |
+| check read, write, execute permission            | -r, -w, -x \<file\> |
+
+### If Statements
+There are two common ways to write an if statement:
+```bash
+#!/bin/bash
 if [<test>]; then
   echo "The test returned True"
 fi
 
-
+if [<test>]
+then
+  echo "The test returned True"
+fi
 ```
+It is the programmer's choice which way to write the statement. Also, it is optional to indent the contents of the if statement. However, indention is the accepted convention for readability, so it's the best practice.
 
-```bash
-#!/bin/bash
-
-```
+<!-- If statements can be used to [[ evaluate ]] or test (( arithmetic )) -->
 
 
+
+**Example:**
 ```bash
 #!/bin/bash
 num_a=100
@@ -205,37 +305,26 @@ if [ $num_a -lt $num_b ]; then
     echo "$num_a is less than $num_b!"
 fi
 ```
-
-
-
-**Example:**
-```bash
-#!/bin/bash
-string_a="UNIX"
-string_b="GNU"
-echo "Are $string_a and $string_b strings equal?"
-[ $string_a = $string_b ]
-echo $?
-```
 **Output:**
 ```console
-Are UNIX and GNU strings equal?
-1
+100 is less than 200!
 ```
-**Example:**
+
+
+
+
+
+
+
+
 ```bash
 #!/bin/bash
-num_a=100
-num_b=100
-echo "Is $num_a equal to $num_b ?"
-[ $num_a -eq $num_b ]
-echo $?
+
 ```
-**Output:**
-```console
-Is 100 equal to 100 ?
-0
-```
+
+
+
+
 
 
 ## *Knowledge Check*
