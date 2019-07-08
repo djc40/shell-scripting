@@ -4,17 +4,14 @@ Bash is the default shell for most UNIX systems. Therefore, as a cyber warfare o
 This course will follow the outline below. Each section will have a basic lesson and then one or more knowledge checks per area. Answers can be found in the accompanying documents.
 
 ## Course Outline
-1. Basics
-  - Variables
-  - Arithmetic
-  - Comparisons and Operators
-  - If Statements
-  - If / Else If / Else Statements
-  - For Loops
-  - While Loops
+1. Variables
+0. Arithmetic
+0. Comparisons and Operators
+0. If Statements
+0. If / Else If / Else Statements
+0. For Loops
+0. While Loops
 
-
-# Basics
 ### Variables
 
 A variable is defined with '=', and there cannot be spaces between the variable name, equal sign, and value of the variable.  
@@ -74,9 +71,11 @@ We can save the output of a command to a variable like so: ```variable=$( <comma
 > echo $#
 > ```
 > 3. What will be the first line output by this script?
-> <!-- example_script -->
+> <!-- ./example_script -->
 > 0. What will be the second line output by this script?
-> <!-- Printing 2 1 0 -->
+> <!-- Printing 2, 1, 0 -->
+> 0. What will be the third line output by this script?
+> <!-- 3 -->
 
 ### Arithmetic
 The operators +, -, \\\*, /, var++, var--, and % can be used to add, subtract, multiply, divide, increment, decrement, and modulus, respectively.
@@ -153,7 +152,13 @@ echo $c # prints 20
 20
 ```
 
-<!-- This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces the length of the variable (its number of characters). For example, if ```a='Hello World'```, then ```${#a}``` is 11. If ```b=4953```, then ```${#b}``` is 4. -->
+This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces the length of the variable (its number of characters). For example, if ```a='Hello World'```, then ```${#a}``` is 11. If ```b=4953```, then ```${#b}``` is 4.
+
+> ## *Knowledge Check*
+> ```bash
+> 
+> ```
+
 
 ### Comparisons and Operators
 Bash makes the Boolean comparison OR using double pipes '||' and AND using double ampersands '&&'.

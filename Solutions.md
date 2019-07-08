@@ -1,0 +1,39 @@
+# Bash Scripting Knowledge Check Solutions
+
+## Course Outline
+1. Variables
+0. Arithmetic
+0. Comparisons and Operators
+0. If Statements
+0. If / Else If / Else Statements
+0. For Loops
+0. While Loops
+
+### Variables
+
+```bash
+#!/bin/bash
+MY_STR="Hi there!"
+echo 'My string is: $MY_STR'
+echo "My string is: $MY_STR"
+```
+1. What will be the first line output by this script?  
+  ```My string is: Hi there!```
+
+0. What will be the second line output by this script?  
+  ```My string is: $MY_STR```
+
+```./example_script 0 1 2```
+```bash
+#!/bin/bash
+echo $0
+echo "Printing $3, $2, $1"
+echo $#
+```
+3. What will be the first line output by this script?  
+  ```./example_script```
+
+0. What will be the second line output by this script?  
+  ```Printing 2, 1, 0```
+0. What will be the third line output by this script?  
+  ```3```
