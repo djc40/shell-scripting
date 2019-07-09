@@ -339,7 +339,7 @@ fi
 >   echo "$num_a and $num_b are not the same"
 > fi
 > ```
-> 1. What is the output of this script?
+> What is the output of this script?
 > <!-- nothing -->
 >   - [ ] 1000 and 1001 are not the same
 >   - [ ] No output

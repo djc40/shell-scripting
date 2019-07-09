@@ -51,29 +51,26 @@ num_2=$(( num_1 / $1 ))
 echo $num_2
 ```
 1. What will be the first line output by this script?
-<!-- 6 -->
   - [ ] 2
   - [ ] 3
   - [X] 6
   - [ ] Error
 0. What will be the second line output by this script?
-<!-- 6 -->
   - [ ] 2
   - [ ] 3
   - [X] 6
   - [ ] Error
 0. What will be the third line output by this script?
-<!-- Error -->
   - [ ] 2
   - [ ] 3
   - [ ] 6
   - [X] Error
 0. What will be the fourth line output by this script?
-<!-- 2 -->
   - [X] 2
   - [ ] 3
   - [ ] 6
   - [ ] Error
+
 
 ```bash
 #!/bin/bash
@@ -90,14 +87,12 @@ echo $?
 ```
 1. What is the output if the script is called like so?:  
 ```./example_script Hello```
-<!-- 0 -->
   - [X] 0
   - [ ] 1
   - [ ] Hello
   - [ ] No output
 0. What is the output if the script is called like so?:  
 ```./example_script```
-<!-- 1 -->
   - [ ] 0
   - [X] 1
   - [ ] Hello
@@ -113,8 +108,7 @@ then
   echo "$num_a and $num_b are not the same"
 fi
 ```
-1. What is the output of this script?
-<!-- nothing -->
+What is the output of this script?
   - [ ] 1000 and 1001 are not the same
   - [X] No output
 
@@ -136,7 +130,17 @@ What does this script do?
 It prints the larger of the two numbers provided, or '--' if they are the same
 
 ### For Loops
-
+```bash
+#!/bin/bash
+for val in {1..10}
+do
+echo $val
+done
+```
+1. What will be the first line output by this script?  
+```My string is: 1```
+0. What will be the fifth line output by this script?  
+```My string is: 5```
 
 
 ### While Loops
