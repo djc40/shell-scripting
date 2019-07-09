@@ -574,9 +574,9 @@ In this case the expression evaluated is `$counter -le 5`. As long as $counter i
 > do
 >   echo $counter
 >   if [ $(($counter % 2)) -eq 0]; then
-      echo "even"
-    fi
-    let "counter = counter + 1"
+>      echo "even"
+>    fi
+>    let "counter = counter + 1"
 > done
 > ```
 > 3. What will be the fourth line output by this script?
