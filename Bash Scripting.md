@@ -189,7 +189,14 @@ This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces
 >   - [ ] 6
 >   - [ ] Error
 >
-> <!-- ```bash
+> ```bash
+> #!/bin/bash
+> expr $RANDOM % 100
+> ```
+> 5. What will this script output?
+> <!-- A random number between 0 and 100 -->
+
+<!-- ```bash
 > #!/bin/bash
 > # A script to output tomorrow's date
 > x=$( date +%d ) # x reads in as a string
@@ -205,12 +212,6 @@ This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces
 > printf "%02d $( date +%b\ %Y )\n" $x
 > printf "%02d $( date +%b\ %Y )\n" $( expr $( date +%d ) + 1 ) # one-liner solution
 > ``` -->
-> ```bash
-> #!/bin/bash
-> expr $RANDOM % 100
-> ```
-> 5. What will this script output?
-> <!-- A random number between 0 and 100 -->
 
 ### Comparisons and Operators
 Bash makes the Boolean comparison OR using double pipes '||' and AND using double ampersands '&&'.
@@ -277,6 +278,27 @@ In addition to the comparators for numbers and strings shown above, you can use 
 | check if stdout in a given shell is a terminal   | -t 1                |
 | check read, write, execute permission            | -r, -w, -x \<file\> |
 
+> ## *Knowledge Check*
+> ```bash
+> #!/bin/bash
+> [ -z $1 ]
+> echo $?
+> ```
+> 1. What is the output if the script is called like so?:  
+> ```./example_script Hello```
+> <!-- 0 -->
+>   - [ ] 0
+>   - [ ] 1
+>   - [ ] Hello
+>   - [ ] No output
+> 0. What is the output if the script is called like so?:  
+> ```./example_script```
+> <!-- 1 -->
+>   - [ ] 0
+>   - [ ] 1
+>   - [ ] Hello
+>   - [ ] No output
+
 ### If Statements
 There are two common ways to write an if statement:
 ```bash
@@ -290,11 +312,7 @@ then
   echo "The test returned True"
 fi
 ```
-It is the programmer's choice which way to write the statement. Also, it is optional to indent the contents of the if statement. However, indention is the accepted convention for readability, so it's the best practice.
-
-<!-- If statements can be used to [[ evaluate ]] or test (( arithmetic )) -->
-
-
+It's programmer's choice which way to write the statement. Also, it is optional to indent the contents of the if statement. However, indention is the accepted convention for readability, so it's the best practice. It becomes even more important with nested If statements.
 
 **Example:**
 ```bash
@@ -309,59 +327,93 @@ fi
 ```console
 100 is less than 200!
 ```
+<!-- If statements can be used to [[ evaluate ]] or test (( arithmetic )) -->
 
-
-
-
-
-
-
-
-```bash
-#!/bin/bash
-
-```
-
-
-
-
-
-
-## *Knowledge Check*
-Using this script, answer the following questions.
-
-```bash
-#!/etc/bash
-my_name="Bash Lord"
-echo "My name is $my_name"
-num_a = 1000
-num_b = 1001
-echo "I know that $num_b is greater than $num_a"
-
-```
-1. What is the first line of output?
-    1.
-    1.
-    1.
-1.
-1.
-
-
+> ## *Knowledge Check*
+> ```bash
+> #!/etc/bash
+> num_a=1000
+> num_b=1001
+> if [ $num_a != $num_b ]
+> then
+>   echo "$num_a and $num_b are not the same"
+> fi
+> ```
+> 1. What is the output of this script?
+> <!-- nothing -->
+>   - [ ] 1000 and 1001 are not the same
+>   - [ ] No output
 
 ### If / Else if / Else:
-```
+
+For more complicated scenarios, Bash can evaluate an ```if``` and if that's false, check an 'else if' expression using ```elif```. If that's false, it can check another 'else if', and if false, another 'else if', and so on. Finally, if none of the expressions have been true, Bash can execute the commands under ```else```.
+
+**Example:**
+```bash
 #!/bin/bash
-# elif statements
+# Demonstrate the use of if, elif, and else
 if [ $1 -ge 18 ]
 then
-echo You may go to the party.
+  echo You may go to the party.
 elif [ $2 == 'yes' ]
 then
-echo You may go to the party but be back before midnight.
+  echo You may go to the party but be back before midnight.
 else
-echo You may not go to the party.
+  echo You may not go to the party.
 fi
 ```
+**Output:**  
+```./example_script 23```
+```console
+You may go to the party.
+```
+```./example_script 17 yes```
+```console
+You may go to the party but be back before midnight.
+```
+```./example_script 17 no```
+```console
+You may not go to the party.
+```
+
+Combined with the Boolean operations already described, you can evaluate more complicated situations.
+
+**Example:**
+```bash
+#!/bin/bash
+# Check if a file is both readable and has a size greater than zero.
+if [ -r $1 ] && [ -s $1 ]; then
+  echo This file is useful.
+fi
+```
+
+To evaluate expressions with OR or AND, wildcards, or REGEX, you can also use double brackets [[ ]]:
+
+**Example:**
+```bash
+#!/bin/bash
+if [[ $1 == n* || $1 == N* ]]
+then
+  echo "The string starts with 'n' or 'N'"
+else
+  echo "The string does not start with 'n' or 'N'"
+fi
+```
+> ## *Knowledge Check*
+> ```bash
+> #!/etc/bash
+> if [ $1 -gt $2 ]
+> then
+>   echo "$1"
+> elif [ $2 -gt $1 ]
+> then
+>   echo "$2"
+> else
+>   echo "--"
+> fi
+> ```
+> What does this script do?
+> <!-- It prints the larger of the two numbers provided, or '--' if they are the same -->
 
 ### For Loop
 
@@ -378,6 +430,7 @@ for name in $names
 do
   echo $name
 done
+
 
 ```
 **Output:**
