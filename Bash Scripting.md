@@ -362,20 +362,115 @@ else
 echo You may not go to the party.
 fi
 ```
-#### Loops:
-For Loop:
-```
+
+### For Loop
+
+The for loop is a loop that iterates over each of the items in a given list. For each item in the list it will perform the given set of commands between the *do* and *done*.
+
+
+**Example:**
+```bash
 #!/bin/bash
-for i in 1 2 3; do
-  echo $i
+# A simple loop that will print out three names
+names='Jim Bob John Greg'
+
+for name in $names
+do
+  echo $name
+done
+
+```
+**Output:**
+```console
+Jim
+Bob
+John
+Greg
+```
+
+
+A for loop can also iterate over a series of numbers. The series of numbers is specified between two parentheses and the start value and end value are separated by two periods. E.g. `for value in {1..5}`. Additionally, the value to increment or decrement can also be specified after the end value like this: `for value in {0..10..2}`. Also note that the start value can be greater than the end value in order to count down. E.g. `for value in {5..1}`. Examples showing the output for these different types of ranges are shown below.
+
+**Example:**
+```bash
+#!/bin/bash
+for value in {1..5}
+do
+  echo $value
 done
 ```
-While Loop:
+**Output:**
+```console
+1
+2
+3
+4
+5
 ```
+
+**Example:**
+```bash
 #!/bin/bash
-counter=0
-while [ $counter -lt 3 ]; do
-    let counter+=1
-    echo $counter
+for value in {0..10..2}
+do
+  echo $value
 done
 ```
+**Output:**
+```console
+0
+2
+4
+6
+8
+10
+```
+
+**Example:**
+```bash
+#!/bin/bash
+for value in {5..1}
+do
+  echo $value
+done
+```
+**Output:**
+```console
+5
+4
+3
+2
+1
+```
+There are a number of other lists that the for loop can iterate over:
+- Numeric range specified without braces - `for val in 1 2 3 4 5`
+- List of strings not in a variable - `for val in string1 string2 string3`
+- Output of a linux command - `for val in $(Linux-Or-Unix-Command)`
+- C like for loop - `for (( c=1; c<=5; c++ ))`
+
+> ## *Knowledge Check*
+> ```bash
+> #!/bin/bash
+> for val in {1..10}
+> do
+> echo $val
+> done
+> ```
+> 1. What will be the first line output by this script?
+> <!-- My string is: 1 -->
+> 0. What will be the fifth line output by this script?
+> <!-- My string is: 5 -->
+>
+> ```./example_script 0 1 2```
+> ```bash
+> #!/bin/bash
+> echo $0
+> echo "Printing $3, $2, $1"
+> echo $#
+> ```
+> 3. What will be the first line output by this script?
+> <!-- ./example_script -->
+> 0. What will be the second line output by this script?
+> <!-- Printing 2, 1, 0 -->
+> 0. What will be the third line output by this script?
+> <!-- 3 -->
