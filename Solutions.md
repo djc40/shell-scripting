@@ -81,3 +81,62 @@ expr $RANDOM % 100
 ```
 5. What will this script output?  
 ```A random number between 0 and 100```
+
+### Comparisons and Operators
+```bash
+#!/bin/bash
+[ -z $1 ]
+echo $?
+```
+1. What is the output if the script is called like so?:  
+```./example_script Hello```
+<!-- 0 -->
+  - [X] 0
+  - [ ] 1
+  - [ ] Hello
+  - [ ] No output
+0. What is the output if the script is called like so?:  
+```./example_script```
+<!-- 1 -->
+  - [ ] 0
+  - [X] 1
+  - [ ] Hello
+  - [ ] No output
+
+### If Statements
+```bash
+#!/etc/bash
+num_a=1000
+num_b=1001
+if [ $num_a != $num_b ]
+then
+  echo "$num_a and $num_b are not the same"
+fi
+```
+1. What is the output of this script?
+<!-- nothing -->
+  - [ ] 1000 and 1001 are not the same
+  - [X] No output
+
+
+### If / Else If / Else Statements
+```bash
+#!/etc/bash
+if [ $1 -gt $2 ]
+then
+  echo "$1"
+elif [ $2 -gt $1 ]
+then
+  echo "$2"
+else
+  echo "--"
+fi
+```
+What does this script do?  
+It prints the larger of the two numbers provided, or '--' if they are the same
+
+### For Loops
+
+
+
+### While Loops
