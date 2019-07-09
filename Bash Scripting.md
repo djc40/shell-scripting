@@ -514,16 +514,72 @@ There are a number of other lists that the for loop can iterate over:
 > 0. What will be the fifth line output by this script?
 > <!-- My string is: 5 -->
 >
-> ```./example_script 0 1 2```
+> ```./example_script /usr```
 > ```bash
 > #!/bin/bash
-> echo $0
-> echo "Printing $3, $2, $1"
-> echo $#
+> for entry in $(ls $1)
+> do
+>   echo $entry
+> done
 > ```
 > 3. What will be the first line output by this script?
-> <!-- ./example_script -->
-> 0. What will be the second line output by this script?
-> <!-- Printing 2, 1, 0 -->
-> 0. What will be the third line output by this script?
+> <!-- Depends on the distro but probably bin -->
+> 4. Briefly describe what this script is doing
+> <!-- It prints out each entry in the given directory-->
+
+### While Loop
+
+The while loop evaluates an expression. As long as the expression is true it keeps executing the commands between *do* and *done*
+
+**Example:**
+```Bash
+#!/bin/bash
+counter=1
+while [ $counter -le 5 ]
+do
+  echo $counter
+  let "counter = counter + 1"
+done
+```
+
+**Output:**
+```console
+1
+2
+3
+4
+5
+```
+
+In this case the expression evaluated is `$counter -le 5`. As long as $counter is less than 5 the loop will continue to execute
+
+> ## *Knowledge Check*
+> ```bash
+> #!/bin/bash
+> counter=5
+> while [ counter -gt 0]
+> do
+> echo $counter
+> done
+> ```
+> 1. What will be the first line output by this script?
+> <!-- 5 -->
+> 0. What will be the fifth line output by this script?
+> <!-- 5 (there is no decrement changing the counter so this will loop forever) -->
+>
+> ```bash
+> #!/bin/bash
+> counter=1
+> while [ $counter -lt 20]
+> do
+>   echo $counter
+>   if [ $(($counter % 2)) -eq 0]; then
+      echo "even"
+    fi
+    let "counter = counter + 1"
+> done
+> ```
+> 3. What will be the fourth line output by this script?
 > <!-- 3 -->
+> 4. What is the sixth line output by this script?
+> <!-- even -->
