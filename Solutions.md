@@ -185,3 +185,31 @@ done
 `3`
 0. What is the sixth line output by this script?  
 `even`
+
+### Functions
+## *Knowledge Check*
+```bash
+#!/bin/bash
+my_function() {
+  if [ $# -ne 2 ]; then
+    echo "Incorrect"
+  else
+    echo $(($1 + $2))
+  fi
+}
+
+my_val=$(my_function 4 5)
+echo "My first value is $my_val"
+my_val=$(my_function 1 2 3)
+echo "My second value is $my_val"
+```
+1. What is the first line of output of this script?
+  - [ ] `My first value is 4`
+  - [ ] `My first value is 5`
+  - [ ] `My first value is 9`
+  - [ ] `My first value is Incorrect`
+0. What is the second line of output of this script?
+  - [ ] `My second value is 1`
+  - [ ] `My second value is 2`
+  - [ ] `My second value is 6`
+  - [ ] `My second value is Incorrect`

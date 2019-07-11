@@ -11,6 +11,7 @@ This course will follow the outline below. Each section will have a basic lesson
 0. If / Else If / Else Statements
 0. For Loops
 0. While Loops
+0. Functions
 
 ### Variables
 
@@ -581,3 +582,99 @@ In this case the expression evaluated is `$counter -le 5`. As long as $counter i
 > <!-- 3 -->
 > 0. What is the sixth line output by this script?
 > <!-- even -->
+
+### Functions
+There are two formats to write a function. Either is valid; the choice is simply programmer's preference.
+```bash
+#!/bin/bash
+function_name () {
+  <commands>
+}
+
+function function_name {
+  <commands>
+}
+```
+If you choose the implementation with parentheses, keep in mind they are purely decorative in Bash. You won't pass arguments as in other languages.
+
+Another important note: the function definition must occur before any calls to the function within the script.
+
+Calling a function is as simple as typing the name. To pass arguments, simply list them afterwards, like when using a command in the command line. Those arguments are referenced in the function just like command line arguments: `$#` for the number of arguments; `$0` for the function name itself; `$1`, `$2`, etc. for the arguments themselves; and so on.
+
+Bash functions don't return values, per se, like other languages. They can, however, set a return status. That return status can be captured. Typically, an exit status of zero indicates success and a nonzero exit status indicates failures (as you saw earlier), so returning an integer value this way is not the intended purpose but it will work.
+
+**Example:**
+```bash
+#!/bin/bash
+print_thing () {
+  echo Hello $1
+  return ${#1} # recall this is the length of a variable
+}
+
+print_thing World
+echo "Printed $( echo $? ) characters"
+print_thing "Alice and Bob"
+echo "Printed $( echo $? ) characters"
+print_thing Let\'s\ Escape
+echo "Printed $( echo $? ) characters"
+```
+**Output:**
+```console
+Hello World
+Printed 5 characters
+Hello Alice and Bob
+Printed 13 characters
+Hello Let's Escape
+Printed 12 characters
+```
+
+An alternative way to capture a result is to have the function print the result (and only the result) paired with command substitution.
+
+**Example:**
+```bash
+#!/bin/bash
+lines_in_file () {
+  cat $1 | wc -l
+}
+
+num_lines=$( lines_in_file $1 )
+echo The file $1 has $num_lines lines in it.
+```
+**Output:**
+```console
+user@bash#: cat groceries.txt
+Tomatoes
+Lettuce
+Bread
+user@bash#: ./example_script.sh groceries.txt
+The file groceries.txt has 3 lines in it.
+```
+
+By default, variables in Bash are global. You can define a local variable with `local var_name=<var_value>`.
+
+> ## *Knowledge Check*
+> ```bash
+> #!/bin/bash
+> my_function() {
+>   if [ $# -ne 2 ]; then
+>     echo "Incorrect"
+>   else
+>     echo $(($1 + $2))
+>   fi
+> }
+>
+> my_val=$(my_function 4 5)
+> echo "My first value is $my_val"
+> my_val=$(my_function 1 2 3)
+> echo "My second value is $my_val"
+> ```
+> 1. What is the first line of output of this script?
+>   - [ ] `My first value is 4`
+>   - [ ] `My first value is 5`
+>   - [ ] `My first value is 9`
+>   - [ ] `My first value is Incorrect`
+> 0. What is the second line of output of this script?
+>   - [ ] `My second value is 1`
+>   - [ ] `My second value is 2`
+>   - [ ] `My second value is 6`
+>   - [ ] `My second value is Incorrect`
