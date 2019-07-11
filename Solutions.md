@@ -71,7 +71,6 @@ echo $num_2
   - [ ] 6
   - [ ] Error
 
-
 ```bash
 #!/bin/bash
 expr $RANDOM % 100
@@ -85,6 +84,7 @@ expr $RANDOM % 100
 [ -z $1 ]
 echo $?
 ```
+
 1. What is the output if the script is called like so?:  
 ```./example_script Hello```
   - [X] 0
@@ -134,13 +134,54 @@ It prints the larger of the two numbers provided, or '--' if they are the same
 #!/bin/bash
 for val in {1..10}
 do
-echo $val
+  echo $val
 done
 ```
 1. What will be the first line output by this script?  
-```My string is: 1```
+`1`
 0. What will be the fifth line output by this script?  
-```My string is: 5```
+`5`
 
+```./example_script /usr```
+```bash
+#!/bin/bash
+for entry in $(ls $1)
+do
+  echo $entry
+done
+```
+3. What will be the first line output by this script?  
+It depends on the OS distribution but probably bin
+0. Briefly describe what this script is doing  
+It prints out each entry in the given directory
 
 ### While Loops
+```bash
+#!/bin/bash
+counter=5
+while [ counter -gt 0]
+do
+  echo $counter
+done
+```
+1. What will be the first line output by this script?  
+`5`
+0. What will be the fifth line output by this script?  
+`5`; there is no decrement changing the counter so this will loop forever.
+
+```bash
+#!/bin/bash
+counter=1
+while [ $counter -lt 20]
+do
+  echo $counter
+  if [ $(($counter % 2)) -eq 0]; then
+    echo "even"
+  fi
+  let "counter = counter + 1"
+done
+```
+3. What will be the fourth line output by this script?  
+`3`
+0. What is the sixth line output by this script?  
+`even`
