@@ -8,8 +8,11 @@
 0. If / Else If / Else Statements
 0. For Loops
 0. While Loops
+0. Functions
+0. Input
+0. File Operations
 
-### Variables
+## Variables
 
 ```bash
 #!/bin/bash
@@ -39,7 +42,7 @@ echo $#
 0. What will be the third line output by this script?  
 ```3```
 
-### Arithmetic
+## Arithmetic
 
 ```./example_script 2 3```
 ```bash
@@ -76,9 +79,25 @@ echo $num_2
 expr $RANDOM % 100
 ```
 5. What will this script output?  
-```A random number between 0 and 100```
+`A random number between 0 and 100`
 
-### Comparisons and Operators
+6. Write a script to convert a fahrenheit value to celsius, to the nearest integer. (Hint: pass the fahrenheit value to the script as a command line argument.) For a challenge, output the answer to 3 decimal places.
+
+```bash
+#!/bin/bash
+# This script is one example solution to the problem
+# It accepts a fahrenheit value and converts it to celsius
+echo "$1 degrees fahrenheit is $(( ($1-32)*5/9 )) degrees celsius"
+```
+```bash
+#!/bin/bash
+# This script shows two solutions to the challenge problem
+# It accepts a fahrenheit value and converts it to celsius
+printf "$1 degrees fahrenheit is %.3f degrees celsius\n" $( awk "BEGIN {print ($1-32)*5/9}" )
+printf "$1 degrees fahrenheit is %.3f degrees celsius\n" $( echo "($1-32)*5/9" | bc -l ) # bc must be installed
+```
+
+## Comparisons and Operators
 ```bash
 #!/bin/bash
 [ -z $1 ]
@@ -98,7 +117,7 @@ echo $?
   - [ ] Hello
   - [ ] No output
 
-### If Statements
+## If Statements
 ```bash
 #!/etc/bash
 num_a=1000
@@ -113,7 +132,7 @@ What is the output of this script?
   - [X] No output
 
 
-### If / Else If / Else Statements
+## If / Else If / Else Statements
 ```bash
 #!/etc/bash
 if [ $1 -gt $2 ]
@@ -129,7 +148,7 @@ fi
 What does this script do?  
 It prints the larger of the two numbers provided, or '--' if they are the same
 
-### For Loops
+## For Loops
 ```bash
 #!/bin/bash
 for val in {1..10}
@@ -155,7 +174,7 @@ It depends on the OS distribution but probably bin
 0. Briefly describe what this script is doing  
 It prints out each entry in the given directory
 
-### While Loops
+## While Loops
 ```bash
 #!/bin/bash
 counter=5
@@ -186,8 +205,7 @@ done
 0. What is the sixth line output by this script?  
 `even`
 
-### Functions
-## *Knowledge Check*
+## Functions
 ```bash
 #!/bin/bash
 my_function() {
@@ -213,3 +231,42 @@ echo "My second value is $my_val"
   - [ ] `My second value is 2`
   - [ ] `My second value is 6`
   - [ ] `My second value is Incorrect`
+
+## Input
+
+1. Write a simple script to collect a username and password from the user. Make sure the password is not visible as the user types it in.
+
+```bash
+#!/bin/bash
+# This script is one example solution to the problem
+echo Input your new credentials:
+read -p "Username: " username
+read -sp "Password: " userpass
+echo
+echo Thank you, $username, your credentials have been input.
+```
+
+2. Now, develop that script to ask for the password twice, confirming that the input was the same both times. Keep asking until the password has been input correctly. (Hint: make use of while loops, if statements, and user input.)
+
+```bash
+#!/bin/bash
+# This script is one example solution to the problem
+echo Input your new credentials:
+read -p "Username: " username
+passcorrect=0
+
+while [ $passcorrect -eq 0]
+do
+  read -sp "Enter Password: " pass1
+  echo
+  read -sp "Confirm Password: " pass2
+  echo
+  if [ $pass1 == $pass2 ]
+  then
+    passcorrect=1
+  else
+    echo Those passwords did not match. Input again.
+  fi
+done
+echo Thank you, $username, your credentials have been input.
+```

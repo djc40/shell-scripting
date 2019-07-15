@@ -12,8 +12,10 @@ This course will follow the outline below. Each section will have a basic lesson
 0. For Loops
 0. While Loops
 0. Functions
+0. Input
+0. File Operations
 
-### Variables
+## Variables
 
 A variable is defined with '=', and there cannot be spaces between the variable name, equal sign, and value of the variable.  
 Strings can be defined with single or double quotes:  
@@ -78,7 +80,7 @@ We can save the output of a command to a variable like so: ```variable=$( <comma
 > 0. What will be the third line output by this script?
 > <!-- 3 -->
 
-### Arithmetic
+## Arithmetic
 The operators +, -, \\\*, /, var++, var--, and % can be used to add, subtract, multiply, divide, increment, decrement, and modulus, respectively.
 
 The command ```let``` evaluates an arithmetic expression and can be used to save the result to a variable.  
@@ -196,6 +198,7 @@ This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces
 > ```
 > 5. What will this script output?
 > <!-- A random number between 0 and 100 -->
+> 6. Write a script to convert a fahrenheit value to celsius, to the nearest integer. (Hint: pass the fahrenheit value to the script as a command line argument.) For a challenge, output the answer to 3 decimal places.
 
 <!-- ```bash
 > #!/bin/bash
@@ -214,7 +217,7 @@ This is not truly arithmetic, but ```${#var}``` is extremely useful. It produces
 > printf "%02d $( date +%b\ %Y )\n" $( expr $( date +%d ) + 1 ) # one-liner solution
 > ``` -->
 
-### Comparisons and Operators
+## Comparisons and Operators
 Bash makes the Boolean comparison OR using double pipes '||' and AND using double ampersands '&&'.
 
 The following conditionals can be used in bash. Note the different usage depending on whether you're comparing numbers or comparing strings.
@@ -300,7 +303,7 @@ In addition to the comparators for numbers and strings shown above, you can use 
 >   - [ ] Hello
 >   - [ ] No output
 
-### If Statements
+## If Statements
 There are two common ways to write an if statement:
 ```bash
 #!/bin/bash
@@ -345,7 +348,7 @@ fi
 >   - [ ] 1000 and 1001 are not the same
 >   - [ ] No output
 
-### If / Else if / Else:
+## If / Else if / Else:
 
 For more complicated scenarios, Bash can evaluate an ```if``` and if that's false, check an 'else if' expression using ```elif```. If that's false, it can check another 'else if', and if false, another 'else if', and so on. Finally, if none of the expressions have been true, Bash can execute the commands under ```else```.
 
@@ -416,7 +419,7 @@ fi
 > What does this script do?
 > <!-- It prints the larger of the two numbers provided, or '--' if they are the same -->
 
-### For Loops
+## For Loops
 
 The for loop is a loop that iterates over each of the items in a given list. For each item in the list it will perform the given set of commands between the ```do``` and ```done```.
 
@@ -526,7 +529,7 @@ There are a number of other lists that the for loop can iterate over:
 > 0. Briefly describe what this script is doing
 > <!-- It prints out each entry in the given directory -->
 
-### While Loops
+## While Loops
 
 The while loop evaluates an expression. As long as the expression is true it keeps executing the commands between `do` and `done`.
 
@@ -583,7 +586,7 @@ In this case the expression evaluated is `$counter -le 5`. As long as $counter i
 > 0. What is the sixth line output by this script?
 > <!-- even -->
 
-### Functions
+## Functions
 There are two formats to write a function. Either is valid; the choice is simply programmer's preference.
 ```bash
 #!/bin/bash
@@ -678,3 +681,62 @@ By default, variables in Bash are global. You can define a local variable with `
 >   - [ ] `My second value is 2`
 >   - [ ] `My second value is 6`
 >   - [ ] `My second value is Incorrect`
+
+## Input
+
+To collect input from the user, simply use `read`. With the `-p` flag, you can include a prompt. The `-s` flag keeps the input silent.
+
+**Example:**
+```bash
+echo Hello, what is your name?
+read name
+echo Hi $name, it\'s nice to meet you.
+
+read -p "How old are you? " age
+echo Got it! You are $age years old.
+```
+**Output:**
+```console
+Hello, what is your name?
+(your input)
+Hi (your input), it's nice to meet you.
+How old are you? (your input)
+Got it! You are (your input) years old.
+```
+
+> ## *Knowledge Check*
+> 1. Write a simple script to collect a username and password from the user. Make sure the password is not visible as the user types it in.
+> 0. Now, develop that script to ask for the password twice, confirming that the input was the same both times. Keep asking until the password has been input correctly. (Hint: make use of while loops, if/else statements, and user input.)
+
+A script can also send to or receive data via a pipe. The most straightforward way to do this is by using the system shortcuts `/dev/stdin`, `/dev/stdout`, and `dev/stderr`.
+
+**Example:**
+
+`salesdata.txt`
+```console
+Susie oranges 5 7 July
+Frida apples 20 4 July
+Mark watermelons 12 10 July
+Terry peaches 7 15 July
+```
+`summary.sh`
+```bash
+#!/bin/bash
+echo Here is a summary of the sales data:
+echo ------------------------------------
+
+cat /dev/stdin | cut -d' ' -f 2,3 | sort
+```
+**Output:**
+
+`cat salesdata.txt | ./summary.sh`
+```console
+Here is a summary of the sales data:
+------------------------------------
+apples 20
+oranges 5
+peaches 7
+watermelons 20
+```
+
+## File Operations
