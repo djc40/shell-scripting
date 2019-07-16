@@ -747,13 +747,14 @@ Bash can also be used to interact with files on the operating system including r
 **Reading a File**  
 A common way to read in a file is to do it line by line and assign that line to a variable. Here is an example of the syntax. Using `IFS=` before read prevents leading/trailing whitespace from being trimmed. The file being read is /path/to/txt/file and each line of the file is assigned to the variable `line` as it's read.
 
+**Example**
 ```bash
 #!/bin/bash
 input="/path/to/txt/file"
 while IFS= read -r line
 do
-  echo $line
-done < $input
+  echo "$line"
+done < "$input"
 ```
 
 The filename can also be piped into the while loop using cat instead of redirecting it.
@@ -762,9 +763,70 @@ The filename can also be piped into the while loop using cat instead of redirect
 input="/path/to/txt/file"
 cat $input | while IFS= read -r line
 do
-  echo $line
+  echo "$line"
 done
 ```
+**Output**
+With text file test.txt:
+```console
+Cat
+Dog
+bird
+dinosaur
+  these are animals
+```
+Running either of the previous two scripts with the path to test.txt as `input` yields:
+```console
+Cat
+Dog
+bird
+dinosaur
+  these are animals
+```
+
 
 **Writing to a File**
-Writing to a file will make use of the `>` and `>>` operators. Simply redirect 
+Writing to a file will make use of the `>` and `>>` operators. Simply redirect your text or variables to the file.
+
+**Example**
+```Bash
+#!/bin/bash
+file="/tmp/out.txt"
+echo "Text going to output file" > $file
+```
+
+**Output**
+
+`cat /tmp/out.txt`
+```console
+Text going to output file
+```
+
+> ## *Knowledge Check*
+> 1. Write a simple script that writes to a file named "bin_files". The first line of the file should have the text "These are the files located in /bin". The next lines should be all the files in your /bin directory. Finally the last line should have the text "There are <num> files in /bin" where <num> is the number of files.
+> <!--
+> Answer:
+> #!/bin/bash
+> file="/tmp/bin_files"
+> echo "These are the files located in /bin" > $file
+> ls /bin >> $file
+> num=$ls /bin | wc -l)
+> echo "There are $num files in /bin" >> $file -->
+> 0. Now, develop a script that will read in the file you just created "/tmp/bin_files" and echo out every file that starts with a "cu" as well as counts the number of files that begin with "d" and outputs that number. (Hint. if statements "==" behaves differently in double brackets [[ == ]]. You can use wildcard matching i.e. [[ test == tes* ]] is true)
+> <!--
+> Answer:
+> #!/bin/bash
+> input="/tmp/bin_files"
+> count=0
+> while IFS= read -r line
+> do
+>   if [[ $line == cu* ]] ;
+>   then
+>     echo $line
+>   fi
+>   if [[ $line == d* ]] ;
+>   then
+>     let "count = $count + 1"
+>   fi
+> done < $input
+> echo "There are $count files that begin with \"d\""-->
