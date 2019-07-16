@@ -585,6 +585,7 @@ In this case the expression evaluated is `$counter -le 5`. As long as $counter i
 > <!-- 3 -->
 > 0. What is the sixth line output by this script?
 > <!-- even -->
+[//]: # (TODO: Add knowledge checks that incorporate pervious fundamentals)
 
 ## Functions
 There are two formats to write a function. Either is valid; the choice is simply programmer's preference.
@@ -740,3 +741,30 @@ watermelons 20
 ```
 
 ## File Operations
+
+Bash can also be used to interact with files on the operating system including reading and writing to files. This can be especially useful to search for specific information in text files or to clean logs.  
+
+**Reading a File**  
+A common way to read in a file is to do it line by line and assign that line to a variable. Here is an example of the syntax. Using `IFS=` before read prevents leading/trailing whitespace from being trimmed. The file being read is /path/to/txt/file and each line of the file is assigned to the variable `line` as it's read.
+
+```bash
+#!/bin/bash
+input="/path/to/txt/file"
+while IFS= read -r line
+do
+  echo $line
+done < $input
+```
+
+The filename can also be piped into the while loop using cat instead of redirecting it.
+```bash
+#!/bin/bash
+input="/path/to/txt/file"
+cat $input | while IFS= read -r line
+do
+  echo $line
+done
+```
+
+**Writing to a File**
+Writing to a file will make use of the `>` and `>>` operators. Simply redirect 
