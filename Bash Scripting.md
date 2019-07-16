@@ -14,6 +14,7 @@ This course will follow the outline below. Each section will have a basic lesson
 0. Functions
 0. Input
 0. File Operations
+0. Capstone
 
 ## Variables
 
@@ -830,3 +831,16 @@ Text going to output file
 >   fi
 > done < $input
 > echo "There are $count files that begin with \"d\""-->
+
+## Capstone
+
+#### What is the script doing section
+Harder scripts that incorporate everything here and ask what output would be or some other stuff.
+
+#### Survey Script
+
+#### Log Cleaning Script
+
+#### base64 conversion scripts
+
+#### Encrypt / Decrypt script
