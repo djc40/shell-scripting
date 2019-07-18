@@ -1,7 +1,7 @@
 # Bash Scripting Knowledge Check
 Bash is the default shell for most UNIX systems. Therefore, as a cyber warfare operator it will be necessary for you to understand Bash scripting.
 
-This course will follow the outline below. Each section will have a basic lesson and then one or more knowledge checks per area. Answers can be found in the accompanying documents.
+This course will follow the outline below. Each section will have a basic lesson and then one or more knowledge checks per area. Answers can be found in the accompanying document.
 
 ## Course Outline
 1. Variables
@@ -234,7 +234,8 @@ The following conditionals can be used in bash. Note the different usage dependi
 
 Square brackets are a reference to the command ```test```. That command evaluates whatever is in the square brackets and exits with a status. A status of 0 means it exited with success; a status of 1 means it exited with failure. In other words:  
 *0 -> True*  
-*1 -> False*
+*1 -> False*  
+(If you've programmed in other languages, take note. This convention to return 0 for success is the same as defined in C. Don't confuse it with the typical Boolean association of 0 with False and 1 with True.)
 
 **Example:**
 ```bash
@@ -600,7 +601,7 @@ function function_name {
   <commands>
 }
 ```
-If you choose the implementation with parentheses, keep in mind they are purely decorative in Bash. You won't pass arguments as in other languages.
+If you choose the implementation with parentheses, keep in mind they are purely decorative in Bash. You won't define arguments here as in other languages.
 
 Another important note: the function definition must occur before any calls to the function within the script.
 
@@ -611,17 +612,18 @@ Bash functions don't return values, per se, like other languages. They can, howe
 **Example:**
 ```bash
 #!/bin/bash
+# Demonstrate the use of a function returning an integer
 print_thing () {
   echo Hello $1
   return ${#1} # recall this is the length of a variable
 }
 
 print_thing World
-echo "Printed $( echo $? ) characters"
+echo "Printed $? characters"
 print_thing "Alice and Bob"
-echo "Printed $( echo $? ) characters"
+echo "Printed $? characters"
 print_thing Let\'s\ Escape
-echo "Printed $( echo $? ) characters"
+echo "Printed $? characters"
 ```
 **Output:**
 ```console
@@ -651,7 +653,7 @@ user@bash#: cat groceries.txt
 Tomatoes
 Lettuce
 Bread
-user@bash#: ./example_script.sh groceries.txt
+user@bash#: ./example_script groceries.txt
 The file groceries.txt has 3 lines in it.
 ```
 
@@ -679,8 +681,8 @@ By default, variables in Bash are global. You can define a local variable with `
 >   - [ ] `My first value is 9`
 >   - [ ] `My first value is Incorrect`
 > 0. What is the second line of output of this script?
->   - [ ] `My second value is 1`
 >   - [ ] `My second value is 2`
+>   - [ ] `My second value is 3`
 >   - [ ] `My second value is 6`
 >   - [ ] `My second value is Incorrect`
 
@@ -731,8 +733,8 @@ cat /dev/stdin | cut -d' ' -f 2,3 | sort
 ```
 **Output:**
 
-`cat salesdata.txt | ./summary.sh`
 ```console
+user@bash#: cat salesdata.txt | ./summary.sh
 Here is a summary of the sales data:
 ------------------------------------
 apples 20
@@ -745,10 +747,10 @@ watermelons 20
 
 Bash can also be used to interact with files on the operating system including reading and writing to files. This can be especially useful to search for specific information in text files or to clean logs.  
 
-**Reading a File**  
-A common way to read in a file is to do it line by line and assign that line to a variable. Here is an example of the syntax. Using `IFS=` before read prevents leading/trailing whitespace from being trimmed. The file being read is /path/to/txt/file and each line of the file is assigned to the variable `line` as it's read.
+### Reading a File  
+A common way to read in a file is to do it line-by-line and assign that line to a variable. Here is an example of the syntax. Using `IFS=` before `read` prevents leading and trailing whitespace from being trimmed. The file being read is /path/to/txt/file and each line of the file is assigned to the variable `line` as it's read. The `-r` flag is commonly included as it prevents backslash escapes from being interpreted. This way, the file is read in as-is and its original contents are preserved.
 
-**Example**
+**Example:**
 ```bash
 #!/bin/bash
 input="/path/to/txt/file"
@@ -767,9 +769,9 @@ do
   echo "$line"
 done
 ```
-**Output**
-With text file test.txt:
+**Output:**  
 ```console
+user@bash#: cat test.txt
 Cat
 Dog
 bird
@@ -785,62 +787,71 @@ dinosaur
   these are animals
 ```
 
-
-**Writing to a File**
+### Writing to a File
 Writing to a file will make use of the `>` and `>>` operators. Simply redirect your text or variables to the file.
 
-**Example**
+**Example:**
 ```Bash
 #!/bin/bash
 file="/tmp/out.txt"
 echo "Text going to output file" > $file
 ```
 
-**Output**
-
-`cat /tmp/out.txt`
+**Output:**
 ```console
+user@bash#: ./example_script
+user@bash#: cat /tmp/out.txt
 Text going to output file
 ```
 
 > ## *Knowledge Check*
-> 1. Write a simple script that writes to a file named "bin_files". The first line of the file should have the text "These are the files located in /bin". The next lines should be all the files in your /bin directory. Finally the last line should have the text "There are <num> files in /bin" where <num> is the number of files.
-> <!--
-> Answer:
-> #!/bin/bash
-> file="/tmp/bin_files"
-> echo "These are the files located in /bin" > $file
-> ls /bin >> $file
-> num=$ls /bin | wc -l)
-> echo "There are $num files in /bin" >> $file -->
-> 0. Now, develop a script that will read in the file you just created "/tmp/bin_files" and echo out every file that starts with a "cu" as well as counts the number of files that begin with "d" and outputs that number. (Hint. if statements "==" behaves differently in double brackets [[ == ]]. You can use wildcard matching i.e. [[ test == tes* ]] is true)
-> <!--
-> Answer:
-> #!/bin/bash
-> input="/tmp/bin_files"
-> count=0
-> while IFS= read -r line
-> do
->   if [[ $line == cu* ]] ;
->   then
->     echo $line
->   fi
->   if [[ $line == d* ]] ;
->   then
->     let "count = $count + 1"
->   fi
-> done < $input
-> echo "There are $count files that begin with \"d\""-->
+> 1. Write a simple script that writes to a file in "/tmp/" named "bin_files". The first line of the file should have the text "These are the files located in /bin". The next lines should be all the files in your /bin directory. Finally, the last line should have the text "There are <num> files in /bin" where <num> is the number of files.
+>
+> 0. Now, develop a script that will read in the "/tmp/bin_files" file you just created, echo out every filename that starts with a "cu", count the number of files that begin with "d", and output that number.  
+(Hint: if statements using "==" behave differently in double brackets [[ == ]]. Recall you can use wildcard matching i.e. `[[ test == tes* ]]`)
 
 ## Capstone
 
-#### What is the script doing section
-Harder scripts that incorporate everything here and ask what output would be or some other stuff.
+In this final section, you'll need to put together everything you've learned so far. Some of these questions may also require outside research.
 
-#### Survey Script
-
-#### Log Cleaning Script
-
-#### base64 conversion scripts
-
-#### Encrypt / Decrypt script
+> ## *Knowledge Check*
+>
+> [//]: # (### *Determine What a Script Does*)
+> [//]: # (Add harder scripts that incorporate all the concepts covered and ask what the output or effects of the script would be.)
+>
+>
+>
+>
+> ### *Write Your Own Scripts*
+> **Survey Script**  
+> Write a script to survey a target Linux box. You may assume you are root. Here are some ideas for what your script can do:
+> - Check who is logged in / how many users are logged in
+> - Check how long the system has been up
+> - Check system load averages
+> - Check the date of the systems
+> - Collect system information e.g. OS and conversion
+> - Enumerate the root directory's contents
+> - Enumerate the default logging directory's contents
+> - Gather the process list
+> - Capture the system's network connections
+> - Capture its listening ports/services
+> - Check file system disk usage
+> - Check current remote mounts
+> - Collect user-, password-, and group-related files
+> - Gather the system's modules
+> - Gather the system's services
+> - Collect every user's cron jobs
+> - Compress all this data so it can be exfil'd
+>
+> **Log Cleaning Script**  
+> Write a script to clean logs. Apply it to your survey script so you clean up your activity on the system. Here are some ideas for what your script can do:
+> - Erase all or a particular number of recent commands from bash history
+> - Clean any line with a particular IP address from every log in /var/log/
+> - For all logs in /var/log/, remove any lines with a timestamp from the past 2 minutes  
+  (Hint: use the `date` command and `egrep`)
+>
+> [//]: # (**base64 Conversion Script**  )
+> [//]: # (Write a script to read in a file and create a base64-encoded version of the file.)
+>
+> [//]: # (**Encrypt / Decrypt Script**  )
+> [//]: # (Write a script or scripts to encrypt and decrypt a file with a key.)
