@@ -41,6 +41,7 @@ I know email/flat-text messages can lose context, I’ll explain the next time I
         - [ ] Encrypt/Decrypt script
 - [ ] Spell check
 - [ ] Make sure table of contents lines up with sections
+- [ ] Move all solutions comments to the solutions.md page
         
 
 ## FAQ Stuff:
