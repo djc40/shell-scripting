@@ -17,6 +17,17 @@ I know email/flat-text messages can lose context, I’ll explain the next time I
 
 ## TODO:
 - [ ] Add questions where student writes simple scripts
+    - [ ] Variables
+    - [ ] Arithmetic
+    - [ ] Comparisons and Operators
+    - [ ] If Statements
+    - [ ] If / Else If / Else Statements
+    - [ ] For Loops
+    - [ ] While Loops
+    - [ ] Functions
+    - [ ] User Input
+    - [ ] File Operations
+    - [x] Capstone
 - [ ] Incorporate questions in each section that also build upon previous concepts
 - [x] Input from a user section
 - [ ] Start/stop running processes section
@@ -28,6 +39,9 @@ I know email/flat-text messages can lose context, I’ll explain the next time I
         - [ ] Read file and write out base64 of file
         - [x] Log cleaning script
         - [ ] Encrypt/Decrypt script
+- [ ] Spell check
+- [ ] Make sure table of contents lines up with sections
+        
 
 ## FAQ Stuff:
 - How to compile the pdf
