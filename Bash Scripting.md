@@ -7,7 +7,7 @@ This course will follow the outline below. Each section will have a basic lesson
 - Madeline Hundley
 - Daniel Celebucki
 - Jeffrey Jordan
-
+- Manuel Vargas
 
 ## Course Outline
 1. Variables
