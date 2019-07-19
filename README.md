@@ -21,5 +21,7 @@ I know email/flat-text messages can lose context, I’ll explain the next time I
 - Suggested Packages
     - Markdown-preview
     - Markdown-scroll-sync
-- 
+- Git Info
+    - https://www.freecodecamp.org/news/git-commands/
+      
     
