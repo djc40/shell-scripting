@@ -2,7 +2,7 @@
 Bash is the default shell for most UNIX systems. Therefore, as a cyber warfare operator it will be necessary for you to understand Bash scripting.
 
 This course will follow the outline below. Each section will have a basic lesson and then one or more knowledge checks per area. Answers can be found in the accompanying document.
-
+ 
 #### Authors
 - Madeline Hundley
 - Daniel Celebucki
