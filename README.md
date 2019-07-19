@@ -1,7 +1,7 @@
 # shell-scripting
 Shell scripting tutorials and questions
 
-#### Guidance from the boss:
+## Guidance from the boss:
 
 Great work here!
 
@@ -15,7 +15,21 @@ I may have missed in in the review, but can you include scripts that take in inp
 
 I know email/flat-text messages can lose context, I’ll explain the next time I’m able to make it to the OL.
 
-#### FAQ Stuff:
+## TODO:
+- [ ] Add questions where student writes simple scripts
+- [ ] Incorporate questions in each section that also build upon previous concepts
+- [x] Input from a user section
+- [ ] Start/stop running processes section
+- [x] Read/write to a file section
+- [ ] Capstone section
+    - [ ] Big scripts that incorporate everything and questions about what they are doing at certain points
+    - [ ] Prompts for user to create scripts
+        - [x] Survey Script
+        - [ ] Read file and write out base64 of file
+        - [x] Log cleaning script
+        - [ ] Encrypt/Decrypt script
+
+## FAQ Stuff:
 - How to compile the pdf
     - In Atom, install the package "markdown-pdf". Then when editing the Bash-scripting.md file click from the top bar: Packages -> Markdown-pdf -> Convert
 - Suggested Packages
@@ -25,3 +39,4 @@ I know email/flat-text messages can lose context, I’ll explain the next time I
     - https://www.freecodecamp.org/news/git-commands/
       
     
+ 
